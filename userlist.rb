@@ -1,8 +1,7 @@
 class Userlist
   attr_accessor :users
   def initialize
-    @users = []
-    @usercount = 0 
+    @users = [] 
   end
 
   def list_users(login=nil, sort=nil)
@@ -11,7 +10,13 @@ class Userlist
     users.size.times do |user|
       puts (user+1).to_s + ") " + users[user].fname.ljust(12) + users[user].house.ljust(12) + users[user].whereabouts.ljust(16) + users[user].email
     end
-    gets.chomp
+    choice = gets.chomp
+    clear_screen
+    users[(choice.to_i)-1].show_user unless choice == ""
+  end
+
+  def clear_screen
+    puts "\e[H\e[2J"
   end
 
   def game_of_thronebook
@@ -29,7 +34,7 @@ class Userlist
 
   def check_for_user(log_in_as)
     users.each do |user|
-      return user.username if user.username == log_in_as
+      return user if user.username == log_in_as
     end
     return nil
   end

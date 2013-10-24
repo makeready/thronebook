@@ -1,5 +1,5 @@
 class User
-  attr_accessor :fname, :house, :whereabouts, :email, :wealth, :username, :friends
+  attr_accessor :username, :fname, :house, :whereabouts, :email, :wealth, :username, :friends
 
   def initialize(username, fname, house, whereabouts, email, wealth, friends = [])
     @username = username
@@ -12,6 +12,16 @@ class User
   end
 
   def thronescore
-    wealth + friends.size - enemies.size
+    wealth + friends.size
+  end
+
+  def show_user
+    puts (fname + " " + house).center(80)
+    puts "(Username: #{username})".center(80)
+    puts "      Location:  #{whereabouts}"
+    puts "      Email:     #{email}"
+    puts "      Wealth:    #{wealth}"
+    puts "      Influence: #{thronescore}"
+    gets.chomp
   end
 end

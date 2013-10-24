@@ -60,13 +60,39 @@ user_menu = Menu.new(%Q(
 
 
 
-                                      USER MENU
-                               1.   List contacts
+
+                                     USER MENU
+                               1.   Show Friends
                                2.    Add Friend
-                               3.    Edit Profile
+                               3.   Edit Profile
                                4. Back to Main Menu
                                
 
+
+
+
+
+
+
+
+))
+
+edit_menu = Menu.new(%Q(
+
+
+
+
+
+
+
+
+                                    EDIT PROFILE
+                               1.   Change username
+                               2.   Change name
+                               3.   Change location
+                               4.   Change wealth
+                               5.   Back to user menu
+                               
 
 
 
@@ -91,28 +117,38 @@ TERM_WIDTH = 80
 
 castle_art.display_menu
 
-puts "Loading userdata..."
-#Load all existing userinfo
-
 until main_menu.choice == 6 do  
   main_menu.display_menu
   case main_menu.choice
   when 1
-      login = main_menu.login_prompt(rolodex)
-      unless login == nil then 
-        until user_menu.choice == 4 do
-          user_menu.display_menu
-          case user_menu.choice
-          when 1
-            rolodex.list_users(login)
-          when 2
-            #add friend
-          when 3
-            #edit profile
+    login = main_menu.login_prompt(rolodex)
+    unless login == nil then 
+      until user_menu.choice == 4 do
+        user_menu.display_menu
+        case user_menu.choice
+        when 1
+          rolodex.list_users(login,"friends")
+        when 2
+          rolodex.list_users(login,"non-friends")
+        when 3
+          until edit_menu.choice == 5 do
+            edit_menu.display_menu
+            case edit_menu.choice
+            when 1
+              edit_menu.edit_prompt(login, "username")
+            when 2
+              edit_menu.edit_prompt(login, "name")
+            when 3
+              edit_menu.edit_prompt(login, "location")
+            when 4
+              edit_menu.edit(login, "wealth")
+            end
           end
+          edit_menu.choice = ""
         end
-        user_menu.choice = ""
       end
+      user_menu.choice = ""
+    end
   when 2
     main_menu.register_prompt(rolodex)
   when 3
@@ -126,22 +162,3 @@ end
 
 puts "What is dead may never die...".center(TERM_WIDTH, " ")
 puts
-
-
-###########SHOW USER PROFILE#
-#0. Relationship (select to edit, only show if logged in)
-#1. Name
-#2. House
-#3. Current Whereabouts
-#4. Email
-#5. Wealth (1-10)
-#6. Thronescore (Calculated - Friends + Wealth - Enemies)
-#7. List user's contacts
-
-##########EDIT USER PROFILE#
-#1. Name
-#2. House
-#3. Whereabouts
-#4. Email
-#5. Wealth
-

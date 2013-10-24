@@ -17,8 +17,8 @@ class Menu
   end
 
   def login_prompt(userlist)
-    puts "Log In".center(TERM_WIDTH, " ")
-    puts "Enter username:".center(TERM_WIDTH, " ")
+    puts "Log In".center(TERM_WIDTH)
+    puts "Enter username:".center(TERM_WIDTH)
     log_in_as = gets.chomp.downcase
     founduser = userlist.check_for_user(log_in_as)
     if founduser == nil then
@@ -31,8 +31,8 @@ class Menu
   end
 
   def register_prompt(userlist)
-    puts "Registering New Account".center(TERM_WIDTH, " ")
-    puts "Enter desired username:".center(TERM_WIDTH, " ")
+    puts "Registering New Account".center(TERM_WIDTH)
+    puts "Enter desired username:".center(TERM_WIDTH)
     log_in_as = gets.chomp.downcase
     if userlist.check_for_user(log_in_as) == nil then
       puts "What's your given name?"
@@ -55,13 +55,33 @@ class Menu
   end
 
   def delete_prompt(userlist)
-    puts "Deleting User (are you sure?)".center(TERM_WIDTH, " ")
-    puts "Enter username to remove:".center(TERM_WIDTH, " ")
+    puts "Deleting User (are you sure?)".center(TERM_WIDTH)
+    puts "Enter username to remove:".center(TERM_WIDTH)
     user_to_delete = gets.chomp.downcase
     if userlist.check_for_user(user_to_delete) != nil then
       userlist.delete_user(user_to_delete)
     else
       puts "Username not found."
+    end
+  end
+
+  def edit_prompt(login, var_name)
+    puts "Please enter a new #{var_name}:"
+    newval = gets.chomp
+    puts "Changing #{var_name} to #{newval}, are you sure? (y/n)"
+    yesno = gets.chomp
+    if yesno == "y" then
+      case var_name
+      when "username"
+        login.username = newval
+      when "name"
+        login.fname = newval[0..newval.index(" ")-1]
+        login.house = newval[newval.index(" ")+1..-1]
+      when "location"
+        login.whereabouts = newval
+      when "wealth"
+        login.wealth = newval
+      end
     end
   end
 end
