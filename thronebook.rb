@@ -23,8 +23,12 @@ class Userlist
     @usercount = 0 
   end
 
-  def list_users(login=nil)
-    puts users == [] ? "No users found in database!" : users
+  def list_users(login=nil, sort=nil)
+    puts "   Name--------House-------Location--------Email"
+    puts
+    users.size.times do |user|
+      puts (user+1).to_s + ") " + users[user].fname.ljust(12) + users[user].house.ljust(12) + users[user].whereabouts.ljust(16) + users[user].email
+    end
     gets.chomp
   end
 
@@ -96,7 +100,9 @@ class Menu
       email = gets.chomp
       puts "How wealthy are you, on a scale of 1 to 10?"
       wealth = gets.chomp
-      userlist.create_user([log_in_as,fname,house,whereabouts,email,wealth])
+      userlist.create_user(log_in_as,fname,house,whereabouts,email,wealth)
+      puts "Registration successful!"
+      gets.chomp
     else
       puts "Username already exists, please try a different username."
       gets.chomp
@@ -122,9 +128,6 @@ end
 
 
 
-
-def list_contacts(logged_in_as,user_to_list,sort_by)
-end
 
 def add_friend(logged_in_as)
 end
@@ -245,12 +248,12 @@ user_menu = Menu.new(%Q(
 
 rolodex = Userlist.new
 #username, fname, house, whereabouts, email, wealth, friends = [], enemies = []
-rolodex.create_user("danaeryst","Danaerys","Targaryen","Essos",8,"mother_of_dragons@yahoo.com",["littlebirds"],["queencersei"])
-rolodex.create_user("jonsnow","Jon","Snow","Castle Black",6,"jon_snuuuuuu@gmail.com")
-rolodex.create_user("queencersei","Cersei","Lannister","King's Landing",10,"myfathersdaughter@hotmail.com")
-rolodex.create_user("theimp","Tyrion","Lannister","King's Landing",10,"tyrion_lannister@gmail.com",["littlebirds","queencersei","littlefinger"])
-rolodex.create_user("valarmorghulis","Arya","Stark","not telling",1,"valarmorghulis@hushmail.com")
-rolodex.create_user("littlebirds","Varys","","King's Landing","thespider@gmail.com",7,["danaeyst","queencersei","theimp"])
+rolodex.create_user("danaeryst","Danaerys","Targaryen","Essos","mother_of_dragons@yahoo.com",8,["littlebirds"],["queencersei"])
+rolodex.create_user("jonsnow","Jon","Snow","Castle Black","jon_snuuuuuu@gmail.com",6)
+rolodex.create_user("queencersei","Cersei","Lannister","King's Landing","myfathersdaughter@hotmail.com",10)
+rolodex.create_user("theimp","Tyrion","Lannister","King's Landing","tyrion_lannister@gmail.com",10,["littlebirds","queencersei","littlefinger"])
+rolodex.create_user("valarmorghulis","Arya","Stark","not telling","valarmorghulis@hushmail.com",1)
+rolodex.create_user("littlebirds","Varys","????","King's Landing","thespider@gmail.com",7,["danaeyst","queencersei","theimp"])
 rolodex.create_user("hodor","Hodor","HODOR","hodor","Hodor",1,["jonsnow","valarmorghulis"])
 rolodex.create_user("littlefinger","Petyr","Baelish","King's Landing","master-of-the-coin@hotmail.com",9,["littlebirds"])
 
@@ -293,7 +296,8 @@ until main_menu.choice == 6 do
   end   
 end
 
-puts "Bye!".center(TERM_WIDTH, " ")
+puts "What is dead may never die...".center(TERM_WIDTH, " ")
+puts
 
 
 ###########SHOW USER PROFILE#
