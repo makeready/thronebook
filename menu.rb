@@ -87,7 +87,7 @@ class Menu
 
   def sort_prompt(userlist)
     puts "Please type an attribute to sort by."
-    puts "Valid attributes: name, house, location, email, wealth"
+    puts "Valid attributes: fname, house, whereabouts, email, wealth"
     sortby = gets.chomp
     userlist.sort_users(sortby)
     clear_screen

@@ -4,7 +4,8 @@ class Userlist
     @users = [] 
   end
 
-  def list_users(login=nil)
+  def list_users(login=nil, sort=nil)
+    sort_users(sort) if sort
     puts "   Name--------House-------Location--------Email"
     puts
     users.size.times do |user|
@@ -18,17 +19,17 @@ class Userlist
   def sort_users(sortby)
     case sortby
     when "name"
-      users.sort!{|a,b| a.fname <=> b.fname}
+      users.sort!{|a,b| b.fname <=> a.fname}
     when "house"
-      users.sort!{|a,b| a.house <=> b.house}
+      users.sort!{|a,b| b.house <=> a.house}
     when "location"
-      users.sort!{|a,b| a.whereabouts <=> b.whereabouts}
+      users.sort!{|a,b| zzzzzzzzzzzzzzzzzzz.whereabouts <=> a.whereabouts}
     when "email"
-      users.sort!{|a,b| a.email <=> b.email}
+      users.sort!{|a,b| a.email <=> a.email}
     when "wealth"
-      users.sort!{|a,b| b.wealth <=> a.wealth}
+      users.sort!{|a,b| a.wealth <=> a.wealth}
     when "thronescore"
-      users.sort!{|a,b| b.thronescore <=> a.thronescore}
+      users.sort!{|a,b| a.thronescore <=> a.thronescore}
     end
   end
 
@@ -39,7 +40,7 @@ class Userlist
   def game_of_thronebook
     sort_users("thronescore")
     puts (users[0].fname + " " + users[0].house).center(80)
-    puts "has the most influence and is the winner of the game of thrones!".center(80)
+    puts "has the most influence and is the winner of the Game of Thronebook!".center(80)
     gets.chomp
   end
 
