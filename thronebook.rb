@@ -1,10 +1,9 @@
 class User
-  attr_accessor :fname, :lname, :house, :whereabouts, :email, :wealth, :username
+  attr_accessor :fname, :house, :whereabouts, :email, :wealth, :username
 
-  def initialize(username, fname, lname, house, whereabouts, email, wealth)
+  def initialize(username, fname, house, whereabouts, email, wealth)
     @username = username
     @fname = fname
-    @lname = lname
     @house = house
     @whereabouts = whereabouts
     @email = email
@@ -22,7 +21,9 @@ class Userlist
     @usercount = 0 
   end
 
-  def list_users(login)
+  def list_users(login=nil)
+    puts users
+    gets.chomp
   end
 
   def game_of_thronebook
@@ -37,7 +38,7 @@ class Userlist
   end
 
   def check_for_user(log_in_as)
-    self.users do |user|
+    users.each do |user|
       puts user
       return user.username if user.username == log_in_as
     end
@@ -85,8 +86,6 @@ class Menu
     if founduser == nil then
       puts "What's your first name?"
       fname = gets.chomp
-      puts "What's your last name?"
-      lname = gets.chomp
       puts "To which house do you belong?"
       house = gets.chomp
       puts "Where do you live?"
@@ -272,7 +271,7 @@ until main_menu.choice == 6 do
   when 3
     main_menu.delete_prompt(rolodex)
   when 4
-    rolodex.list_users(nil)
+    rolodex.list_users
   when 5
     rolodex.game_of_thronebook
   end   
