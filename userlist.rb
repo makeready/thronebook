@@ -19,17 +19,17 @@ class Userlist
   def sort_users(sortby)
     case sortby
     when "name"
-      users.sort!{|a,b| b.fname <=> a.fname}
+      users.sort!{|a,b| a.fname <=> b.fname}
     when "house"
-      users.sort!{|a,b| b.house <=> a.house}
+      users.sort!{|a,b| a.house <=> b.house}
     when "location"
-      users.sort!{|a,b| zzzzzzzzzzzzzzzzzzz.whereabouts <=> a.whereabouts}
+      users.sort!{|a,b| a.whereabouts <=> b.whereabouts}
     when "email"
-      users.sort!{|a,b| a.email <=> a.email}
+      users.sort!{|a,b| a.email <=> b.email}
     when "wealth"
-      users.sort!{|a,b| a.wealth <=> a.wealth}
+      users.sort!{|a,b| b.wealth <=> a.wealth}
     when "thronescore"
-      users.sort!{|a,b| a.thronescore <=> a.thronescore}
+      users.sort!{|a,b| b.thronescore <=> a.thronescore}
     end
   end
 
