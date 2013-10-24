@@ -4,7 +4,7 @@ class Userlist
     @users = [] 
   end
 
-  def list_users(login=nil, sort=nil)
+  def list_users(login=nil)
     puts "   Name--------House-------Location--------Email"
     puts
     users.size.times do |user|
@@ -15,11 +15,30 @@ class Userlist
     users[(choice.to_i)-1].show_user unless choice == ""
   end
 
+  def sort_users(sortby)
+    case sortby
+    when "name"
+      users.sort!{|a,b| a.fname <=> b.fname}
+    when "house"
+      users.sort!{|a,b| a.house <=> b.house}
+    when "location"
+      users.sort!{|a,b| a.whereabouts <=> b.whereabouts}
+    when "email"
+      users.sort!{|a,b| a.email <=> b.email}
+    when "wealth"
+      users.sort!{|a,b| b.wealth <=> a.wealth}
+    when "thronescore"
+      users.sort!{|a,b| b.thronescore <=> a.thronescore}
+    end
+  end
+
   def clear_screen
     puts "\e[H\e[2J"
   end
 
   def game_of_thronebook
+    sort_users("thronescore")
+    puts users[0].fname + " " + users[0].house
   end
 
   def create_user(*args)

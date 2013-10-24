@@ -34,14 +34,14 @@ main_menu = Menu.new(%Q(
 
 
 
-
                                        MAIN MENU
                                1.    Log in as user
                                2. Register New Account
                                3.     Delete user
                                4.      List users
-                               5.  Game of Thronebook
-                               6.         Quit
+                               5.      Sort users
+                               6.  Game of Thronebook
+                               7.         Quit
 
 
 
@@ -117,7 +117,7 @@ TERM_WIDTH = 80
 
 castle_art.display_menu
 
-until main_menu.choice == 6 do  
+until main_menu.choice == 7 do  
   main_menu.display_menu
   case main_menu.choice
   when 1
@@ -156,6 +156,8 @@ until main_menu.choice == 6 do
   when 4
     rolodex.list_users
   when 5
+    main_menu.sort_prompt(rolodex)
+  when 6
     rolodex.game_of_thronebook
   end   
 end
