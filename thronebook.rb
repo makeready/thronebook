@@ -22,7 +22,7 @@ class Userlist
   end
 
   def list_users(login=nil)
-    puts users
+    puts users == [] ? "No users found in database!" : users
     gets.chomp
   end
 
@@ -34,7 +34,10 @@ class Userlist
     #how to generate a unique id for the name of the class? 
   end
 
-  def delete_user
+  def delete_user(user_to_delete_)
+    users.each do |user|
+      users.delete(user) if user.username == user_to_delete
+    end
   end
 
   def check_for_user(log_in_as)
@@ -70,7 +73,7 @@ class Menu
     log_in_as = gets.chomp.downcase
     founduser = userlist.check_for_user(log_in_as)
     if founduser == nil then
-      puts "Username not found, please register a new account."
+      puts "Username \"#{log_in_as}\" not found, please register a new account."
       gets.chomp
       return nil
     else
@@ -82,9 +85,8 @@ class Menu
     puts "Registering New Account".center(TERM_WIDTH, " ")
     puts "Enter desired username:".center(TERM_WIDTH, " ")
     log_in_as = gets.chomp.downcase
-    founduser = userlist.check_for_user(log_in_as)
-    if founduser == nil then
-      puts "What's your first name?"
+    if userlist.check_for_user(log_in_as) == nil then
+      puts "What's your given name?"
       fname = gets.chomp
       puts "To which house do you belong?"
       house = gets.chomp
@@ -94,7 +96,7 @@ class Menu
       email = gets.chomp
       puts "How wealthy are you, on a scale of 1 to 10?"
       wealth = gets.chomp
-      userlist.create_user([log_in_as,fname,lname,house,whereabouts,email,wealth])
+      userlist.create_user([log_in_as,fname,house,whereabouts,email,wealth])
     else
       puts "Username already exists, please try a different username."
       gets.chomp
@@ -104,7 +106,12 @@ class Menu
   def delete_prompt(userlist)
     puts "Deleting User (are you sure?)".center(TERM_WIDTH, " ")
     puts "Enter username to remove:".center(TERM_WIDTH, " ")
-    remove_un = gets.chomp.downcase
+    user_to_delete = gets.chomp.downcase
+    if userlist.check_for_user(user_to_delete) != nil then
+      userlist.delete_user(user_to_delete)
+    else
+      puts "Username not found."
+    end
   end
 end
 
