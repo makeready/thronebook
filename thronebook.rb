@@ -1,175 +1,6 @@
-class User
-  attr_accessor :fname, :house, :whereabouts, :email, :wealth, :username, :friends, :enemies
-
-  def initialize(username, fname, house, whereabouts, email, wealth, friends = [], enemies = [])
-    @username = username
-    @fname = fname
-    @house = house
-    @whereabouts = whereabouts
-    @email = email
-    @wealth = wealth
-    @friends = friends
-    @enemies = enemies
-  end
-
-  def thronescore
-  end
-end
-
-class Userlist
-  attr_accessor :users
-  def initialize
-    @users = []
-    @usercount = 0 
-  end
-
-  def list_users(login=nil, sort=nil)
-    puts "   Name--------House-------Location--------Email"
-    puts
-    users.size.times do |user|
-      puts (user+1).to_s + ") " + users[user].fname.ljust(12) + users[user].house.ljust(12) + users[user].whereabouts.ljust(16) + users[user].email
-    end
-    gets.chomp
-  end
-
-  def game_of_thronebook
-  end
-
-  def create_user(*args)
-    users << User.new(*args)
-  end
-
-  def delete_user(user_to_delete)
-    users.each do |user|
-      users.delete(user) if user.username == user_to_delete
-    end
-  end
-
-  def check_for_user(log_in_as)
-    users.each do |user|
-      return user.username if user.username == log_in_as
-    end
-    return nil
-  end
-end
-
-class Menu
-  attr_accessor :text_to_show, :choice
-
-  def initialize(text_to_show)
-    @text_to_show = text_to_show
-    @choice = ""
-  end
-
-  def clear_screen
-    puts "\e[H\e[2J"
-  end
-
-  def display_menu
-    puts text_to_show 
-    self.choice = gets.chomp.to_i
-    clear_screen
-  end
-
-  def login_prompt(userlist)
-    puts "Log In".center(TERM_WIDTH, " ")
-    puts "Enter username:".center(TERM_WIDTH, " ")
-    log_in_as = gets.chomp.downcase
-    founduser = userlist.check_for_user(log_in_as)
-    if founduser == nil then
-      puts "Username \"#{log_in_as}\" not found, please register a new account."
-      gets.chomp
-      return nil
-    else
-      return founduser
-    end
-  end
-
-  def register_prompt(userlist)
-    puts "Registering New Account".center(TERM_WIDTH, " ")
-    puts "Enter desired username:".center(TERM_WIDTH, " ")
-    log_in_as = gets.chomp.downcase
-    if userlist.check_for_user(log_in_as) == nil then
-      puts "What's your given name?"
-      fname = gets.chomp
-      puts "To which house do you belong?"
-      house = gets.chomp
-      puts "Where do you live?"
-      whereabouts = gets.chomp
-      puts "What's your e-mail address?"
-      email = gets.chomp
-      puts "How wealthy are you, on a scale of 1 to 10?"
-      wealth = gets.chomp
-      userlist.create_user(log_in_as,fname,house,whereabouts,email,wealth)
-      puts "Registration successful!"
-      gets.chomp
-    else
-      puts "Username already exists, please try a different username."
-      gets.chomp
-    end
-  end
-
-  def delete_prompt(userlist)
-    puts "Deleting User (are you sure?)".center(TERM_WIDTH, " ")
-    puts "Enter username to remove:".center(TERM_WIDTH, " ")
-    user_to_delete = gets.chomp.downcase
-    if userlist.check_for_user(user_to_delete) != nil then
-      userlist.delete_user(user_to_delete)
-    else
-      puts "Username not found."
-    end
-  end
-end
-
-
-
-
-
-
-
-
-
-def add_friend(logged_in_as)
-end
-
-def suggest_friend(logged_in_as)
-end
-
-def add_enemy(logged_in_as)
-end
-
-def suggest_enemy(logged_in_as)
-end
-
-def show_user_profile(logged_in_as,selected_user)
-end
-
-def edit_user_profile(logged_in_as)
-end
-
-def edit_name(logged_in_as)
-end
-
-def edit_house(logged_in_as)
-end
-
-def edit_whereabouts(logged_in_as)
-end
-
-def edit_email(logged_in_as)
-end
-
-def edit_wealth(logged_in_as)
-end
-
-def quick_add_contact(attributes)  #pass a hash to this
-end
-
-def save_contact
-end
-
-def load_contacts_and_rolodexi
-end
+require_relative "menu"
+require_relative "user"
+require_relative "userlist"
 
 castle_art = Menu.new(%Q(
 .................T..............................................................
@@ -232,9 +63,8 @@ user_menu = Menu.new(%Q(
                                       USER MENU
                                1.   List contacts
                                2.    Add Friend
-                               3.     Add Enemy
-                               4.    Edit Profile
-                               5. Back to Main Menu
+                               3.    Edit Profile
+                               4. Back to Main Menu
                                
 
 
@@ -247,15 +77,15 @@ user_menu = Menu.new(%Q(
 ))
 
 rolodex = Userlist.new
-#username, fname, house, whereabouts, email, wealth, friends = [], enemies = []
-rolodex.create_user("danaeryst","Danaerys","Targaryen","Essos","mother_of_dragons@yahoo.com",8,["littlebirds"],["queencersei"])
-rolodex.create_user("jonsnow","Jon","Snow","Castle Black","jon_snuuuuuu@gmail.com",6)
-rolodex.create_user("queencersei","Cersei","Lannister","King's Landing","myfathersdaughter@hotmail.com",10)
-rolodex.create_user("theimp","Tyrion","Lannister","King's Landing","tyrion_lannister@gmail.com",10,["littlebirds","queencersei","littlefinger"])
-rolodex.create_user("valarmorghulis","Arya","Stark","not telling","valarmorghulis@hushmail.com",1)
-rolodex.create_user("littlebirds","Varys","????","King's Landing","thespider@gmail.com",7,["danaeyst","queencersei","theimp"])
-rolodex.create_user("hodor","Hodor","HODOR","hodor","Hodor",1,["jonsnow","valarmorghulis"])
-rolodex.create_user("littlefinger","Petyr","Baelish","King's Landing","master-of-the-coin@hotmail.com",9,["littlebirds"])
+#                    username        fname      house       whereabouts      email                            wealth friends
+rolodex.create_user("danaeryst",     "Danaerys","Targaryen","Essos",         "mother_of_dragons@yahoo.com",   8,     ["littlebirds"])
+rolodex.create_user("jonsnow",       "Jon",     "Snow",     "Castle Black",  "jon_snuuuuuu@gmail.com",        6)
+rolodex.create_user("queencersei",   "Cersei",  "Lannister","King's Landing","myfathersdaughter@hotmail.com", 10)
+rolodex.create_user("theimp",        "Tyrion",  "Lannister","King's Landing","tyrion_lannister@gmail.com",    10,    ["littlebirds","queencersei","littlefinger"])
+rolodex.create_user("valarmorghulis","Arya",    "Stark",    "not telling",   "valarmorghulis@hushmail.com",   1)
+rolodex.create_user("littlebirds",   "Varys",   "????",     "King's Landing","thespider@gmail.com",           7,     ["danaeryst","queencersei","theimp"])
+rolodex.create_user("hodor",         "Hodor",   "HODOR",    "hodor",         "Hodor",                         1,     ["jonsnow","valarmorghulis"])
+rolodex.create_user("littlefinger",  "Petyr",   "Baelish",  "King's Landing","master-of-the-coin@hotmail.com",9,     ["littlebirds"])
 
 TERM_WIDTH = 80
 
@@ -270,7 +100,7 @@ until main_menu.choice == 6 do
   when 1
       login = main_menu.login_prompt(rolodex)
       unless login == nil then 
-        until user_menu.choice == 5 do
+        until user_menu.choice == 4 do
           user_menu.display_menu
           case user_menu.choice
           when 1
@@ -278,8 +108,6 @@ until main_menu.choice == 6 do
           when 2
             #add friend
           when 3
-            #add enemy
-          when 4
             #edit profile
           end
         end
