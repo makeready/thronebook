@@ -1,5 +1,16 @@
 class User
-  attr_accessor :name, :house, :whereabouts, :email, :wealth, :username
+  attr_accessor :fname, :lname, :house, :whereabouts, :email, :wealth, :username
+
+  def initialize(username, fname, lname, house, whereabouts, email, wealth)
+    @username = username
+    @fname = fname
+    @lname = lname
+    @house = house
+    @whereabouts = whereabouts
+    @email = email
+    @wealth = wealth
+  end
+
   def thronescore
   end
 end
@@ -8,6 +19,7 @@ class Userlist
   attr_accessor :users
   def initialize
     @users = []
+    @usercount = 0 
   end
 
   def list_users(login)
@@ -16,10 +28,20 @@ class Userlist
   def game_of_thronebook
   end
 
-  def create_user
+  def create_user(args)
+    users << User.new(*args)
+    #how to generate a unique id for the name of the class? 
   end
 
   def delete_user
+  end
+
+  def check_for_user(log_in_as)
+    self.users do |user|
+      puts user
+      return user.username if user.username == log_in_as
+    end
+    return nil
   end
 end
 
@@ -45,19 +67,39 @@ class Menu
     puts "Log In".center(TERM_WIDTH, " ")
     puts "Enter username:".center(TERM_WIDTH, " ")
     log_in_as = gets.chomp.downcase
-    userlist.users do |user|
-      return user.username if user.username == log_in_as
+    founduser = userlist.check_for_user(log_in_as)
+    if founduser == nil then
+      puts "Username not found, please register a new account."
+      gets.chomp
+      return nil
+    else
+      return founduser
     end
-    puts "Username not found, please register a new account."
-    gets.chomp
-    return nil
   end
 
   def register_prompt(userlist)
     puts "Registering New Account".center(TERM_WIDTH, " ")
     puts "Enter desired username:".center(TERM_WIDTH, " ")
-    test_un = gets.chomp.downcase
-    #check if un already exists
+    log_in_as = gets.chomp.downcase
+    founduser = userlist.check_for_user(log_in_as)
+    if founduser == nil then
+      puts "What's your first name?"
+      fname = gets.chomp
+      puts "What's your last name?"
+      lname = gets.chomp
+      puts "To which house do you belong?"
+      house = gets.chomp
+      puts "Where do you live?"
+      whereabouts = gets.chomp
+      puts "What's your e-mail address?"
+      email = gets.chomp
+      puts "How wealthy are you, on a scale of 1 to 10?"
+      wealth = gets.chomp
+      userlist.create_user([log_in_as,fname,lname,house,whereabouts,email,wealth])
+    else
+      puts "Username already exists, please try a different username."
+      gets.chomp
+    end
   end
 
   def delete_prompt(userlist)
