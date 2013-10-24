@@ -1,10 +1,26 @@
-class Contact
+class User
   attr_accessor :name, :house, :whereabouts, :email, :wealth, :username
   def thronescore
   end
 end
 
-class Rolodex
+class Userlist
+  attr_accessor :users
+  def initialize
+    @users = []
+  end
+
+  def list_users(login)
+  end
+
+  def game_of_thronebook
+  end
+
+  def create_user
+  end
+
+  def delete_user
+  end
 end
 
 class Menu
@@ -24,31 +40,40 @@ class Menu
     self.choice = gets.chomp.to_i
     self.clear_screen
   end
+
+  def login_prompt(userlist)
+    puts "Log In".center(TERM_WIDTH, " ")
+    puts "Enter username:".center(TERM_WIDTH, " ")
+    log_in_as = gets.chomp.downcase
+    userlist.users do |user|
+      return user.username if user.username == log_in_as
+    end
+    puts "Username not found, please register a new account."
+    gets.chomp
+    return nil
+  end
+
+  def register_prompt(userlist)
+    puts "Registering New Account".center(TERM_WIDTH, " ")
+    puts "Enter desired username:".center(TERM_WIDTH, " ")
+    test_un = gets.chomp.downcase
+    #check if un already exists
+  end
+
+  def delete_prompt(userlist)
+    puts "Deleting User (are you sure?)".center(TERM_WIDTH, " ")
+    puts "Enter username to remove:".center(TERM_WIDTH, " ")
+    remove_un = gets.chomp.downcase
+  end
 end
 
-def main_menu
-end
 
-def log_in
-end
 
-def create_user
-end
 
-def delete_user
-end
 
-def list_users
-end
 
-def game_of_thronebook
-end
 
-def quit
-end
 
-def user_menu(logged_in_as)
-end
 
 def list_contacts(logged_in_as,user_to_list,sort_by)
 end
@@ -106,10 +131,10 @@ castle_art = Menu.new(%Q(
 .............||.|#^^||==||^^^|................|    *    *    *    *    |........
 .............|[T+TT]####||###=|...P...........==========================........
 .............|[=+==]||##++]|++|TT.O...P.........................................
-.............||.|^^^||^^##^^^|^^|T#..TT.........................................
+.............||.|^^^||^^##^^^|^^|T#..TT...... <--------kings landing obvi.......
 .............||.|^^^^^#^^^+++]^^|^^T^^|..TTT....................................
 .............||.|^#^^^^^^^^^^######|#######|====n...............................
-...........++||.|^^^^^^^^^^^^^^^^^^|^##^^^^[####|_____TT...<---kings landing obv
+...........++||.|^^^^^^^^^^^^^^^^^^|^##^^^^[####|_____TT........................
 .....++++++++||.|^^#^^^^^^^##^^^^^^^^^^^^^^^^^^^^======|........................
 +==+===+===~~||.|_^^^^^:^,#^^^:^:^~^^,,^^,^^#,,^^#^^,,^^........................
 ::::::::~^:^:||#^^^:,:,:,,,,^:#~:,^::#,::^:~,::,~~~:::===============___________
@@ -170,8 +195,11 @@ user_menu = Menu.new(%Q(
 
 ))
 
-castle_art.display_menu
+rolodex = Userlist.new
+
 TERM_WIDTH = 80
+
+castle_art.display_menu
 
 puts "Loading userdata..."
 #Load all existing userinfo
@@ -180,41 +208,36 @@ until main_menu.choice == 6 do
   main_menu.display_menu
   case main_menu.choice
   when 1
-    puts "Log In".center(TERM_WIDTH, " ")
-    puts "Enter username:".center(TERM_WIDTH, " ")
-    log_in_as = gets.chomp.downcase
-    #make sure un exists
-    until user_menu.choice == 5 do
-      user_menu.display_menu
-      case user_menu.choice
-      when 1
-        #list contacts
-      when 2
-        #add friend
-      when 3
-        #add enemy
-      when 4
-        #edit profile
+      login = main_menu.login_prompt(rolodex)
+      unless login == nil then 
+        until user_menu.choice == 5 do
+          user_menu.display_menu
+          case user_menu.choice
+          when 1
+            rolodex.list_users(login)
+          when 2
+            #add friend
+          when 3
+            #add enemy
+          when 4
+            #edit profile
+          end
+        end
+        user_menu.choice = ""
       end
-    end
-    user_menu.choice = ""
   when 2
-    puts "Registering New Account".center(TERM_WIDTH, " ")
-    puts "Enter desired username:".center(TERM_WIDTH, " ")
-    test_un = gets.chomp.downcase
-    #check if un already exists
+    main_menu.register_prompt(rolodex)
   when 3
-    puts "Deleting User (are you sure?)".center(TERM_WIDTH, " ")
-    puts "Enter username to remove:".center(TERM_WIDTH, " ")
-    remove_un = gets.chomp.downcase
+    main_menu.delete_prompt(rolodex)
   when 4
-    #list users
+    rolodex.list_users(nil)
   when 5
-    #game of thronescore
+    rolodex.game_of_thronebook
   end   
 end
 
 puts "Bye!".center(TERM_WIDTH, " ")
+
 
 ###########SHOW USER PROFILE#
 #0. Relationship (select to edit, only show if logged in)
