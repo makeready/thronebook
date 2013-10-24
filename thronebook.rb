@@ -1,13 +1,15 @@
 class User
-  attr_accessor :fname, :house, :whereabouts, :email, :wealth, :username
+  attr_accessor :fname, :house, :whereabouts, :email, :wealth, :username, :friends, :enemies
 
-  def initialize(username, fname, house, whereabouts, email, wealth)
+  def initialize(username, fname, house, whereabouts, email, wealth, friends = [], enemies = [])
     @username = username
     @fname = fname
     @house = house
     @whereabouts = whereabouts
     @email = email
     @wealth = wealth
+    @friends = friends
+    @enemies = enemies
   end
 
   def thronescore
@@ -29,12 +31,11 @@ class Userlist
   def game_of_thronebook
   end
 
-  def create_user(args)
+  def create_user(*args)
     users << User.new(*args)
-    #how to generate a unique id for the name of the class? 
   end
 
-  def delete_user(user_to_delete_)
+  def delete_user(user_to_delete)
     users.each do |user|
       users.delete(user) if user.username == user_to_delete
     end
@@ -42,7 +43,6 @@ class Userlist
 
   def check_for_user(log_in_as)
     users.each do |user|
-      puts user
       return user.username if user.username == log_in_as
     end
     return nil
@@ -64,7 +64,7 @@ class Menu
   def display_menu
     puts text_to_show 
     self.choice = gets.chomp.to_i
-    self.clear_screen
+    clear_screen
   end
 
   def login_prompt(userlist)
@@ -244,6 +244,15 @@ user_menu = Menu.new(%Q(
 ))
 
 rolodex = Userlist.new
+#username, fname, house, whereabouts, email, wealth, friends = [], enemies = []
+rolodex.create_user("danaeryst","Danaerys","Targaryen","Essos",8,"mother_of_dragons@yahoo.com",["littlebirds"],["queencersei"])
+rolodex.create_user("jonsnow","Jon","Snow","Castle Black",6,"jon_snuuuuuu@gmail.com")
+rolodex.create_user("queencersei","Cersei","Lannister","King's Landing",10,"myfathersdaughter@hotmail.com")
+rolodex.create_user("theimp","Tyrion","Lannister","King's Landing",10,"tyrion_lannister@gmail.com",["littlebirds","queencersei","littlefinger"])
+rolodex.create_user("valarmorghulis","Arya","Stark","not telling",1,"valarmorghulis@hushmail.com")
+rolodex.create_user("littlebirds","Varys","","King's Landing","thespider@gmail.com",7,["danaeyst","queencersei","theimp"])
+rolodex.create_user("hodor","Hodor","HODOR","hodor","Hodor",1,["jonsnow","valarmorghulis"])
+rolodex.create_user("littlefinger","Petyr","Baelish","King's Landing","master-of-the-coin@hotmail.com",9,["littlebirds"])
 
 TERM_WIDTH = 80
 
