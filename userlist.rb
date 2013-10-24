@@ -38,7 +38,8 @@ class Userlist
 
   def game_of_thronebook
     sort_users("thronescore")
-    puts users[0].fname + " " + users[0].house + " has the most influence and is the winner of the game of thrones!"
+    puts (users[0].fname + " " + users[0].house).center(80)
+    puts "has the most influence and is the winner of the game of thrones!".center(80)
     gets.chomp
   end
 
