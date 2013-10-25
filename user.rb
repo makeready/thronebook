@@ -24,4 +24,8 @@ class User
     puts "      Influence: #{thronescore}"
     gets.chomp
   end
+
+  def add_friend(friend_user)
+    self.friends << friend_user.username
+  end
 end

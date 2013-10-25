@@ -127,9 +127,9 @@ until main_menu.choice == 7 do
         user_menu.display_menu
         case user_menu.choice
         when 1
-          #rolodex.list_users(login,"friends")
+          rolodex.list_users(login,"friends")
         when 2
-          #rolodex.list_users(login,"non-friends")
+          rolodex.list_users(login,"non-friends")
         when 3
           until edit_menu.choice == 5 do
             edit_menu.display_menu

@@ -4,16 +4,30 @@ class Userlist
     @users = [] 
   end
 
-  def list_users(login=nil, sort=nil)
-    sort_users(sort) if sort
+  def list_users(login=nil,status=nil)
+    if login then
+      if status =="friends" then
+        users_to_show = users.select{|user| login.friends.index(user.username) != nil}
+      elsif status == "non-friends" then
+        users_to_show = users.select{|user| login.friends.index(user.username) == nil}
+      end
+    else
+      users_to_show = users
+    end
     puts "   Name--------House-------Location--------Email"
     puts
-    users.size.times do |user|
-      puts (user+1).to_s + ") " + users[user].fname.ljust(12) + users[user].house.ljust(12) + users[user].whereabouts.ljust(16) + users[user].email
+    counter = 0
+    users_to_show.each do |user|
+      counter += 1 
+      puts counter.to_s + ") " + user.fname.ljust(12) + user.house.ljust(12) + user.whereabouts.ljust(16) + user.email
     end
     choice = gets.chomp
     clear_screen
-    users[(choice.to_i)-1].show_user unless choice == ""
+    if status == "non-friends" then
+      login.add_friend(users_to_show[(choice.to_i)-1])
+    else
+      users_to_show[(choice.to_i)-1].show_user unless choice == ""
+    end
   end
 
   def sort_users(sortby)
