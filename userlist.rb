@@ -24,7 +24,7 @@ class Userlist
     choice = gets.chomp
     clear_screen
     if status == "non-friends" then
-      login.add_friend(users_to_show[(choice.to_i)-1])
+      login.add_friend(users_to_show[(choice.to_i)-1]) unless choice == ""
     else
       users_to_show[(choice.to_i)-1].show_user unless choice == ""
     end
